@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <vector>
+#include <QHBoxLayout>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,6 +19,8 @@ public:
 
 private:
     void createEntry(QString buttonStr, QString labelName, int labelAmount);
+
+    std::vector<QHBoxLayout*> hlayout;
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H
