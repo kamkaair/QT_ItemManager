@@ -2,8 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <vector>
 #include <QHBoxLayout>
+#include <QFormLayout>
+
+#include <vector>
 #include <entry.h>
 
 QT_BEGIN_NAMESPACE
@@ -18,11 +20,15 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private:
-    //void createEntry(QString buttonStr, QString labelName, int labelAmount);
+private slots:
+    void receiveEntry(Entry& inEntry);
 
-    std::vector<QHBoxLayout*> hlayout;
-    std::vector<Entry*> entries;
+private:
+    QFormLayout* mainFormlayout;
+    QFormLayout* selectFormlayout;
+
+    std::vector<Entry*> mainEntries;
+    std::vector<Entry*> selectedEntries;
     Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H

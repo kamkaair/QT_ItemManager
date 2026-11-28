@@ -1,7 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QFormLayout>
+
 #include <array>
+#include <iostream>
 
 // Double-braces required in C++11 prior to (seemed to be needed in this case)
 // https://en.cppreference.com/cpp/container/array
@@ -62,19 +63,34 @@ std::array<std::pair<QString, int>, 54> characters = {{
     {"Zenyatta", 0},
 }};
 
+void MainWindow::receiveEntry(Entry& inEntry) {
+    // Test stuff
+    //Entry* newEntry = new Entry("Palli", 25, 0);
+    //selectFormlayout->insertRow(0, newEntry->getHLayout()); // Testing with index 0
+    //selectedEntries.push_back(&newEntry);
+
+    selectFormlayout->insertRow(0, inEntry.getHLayout()); // Testing with index 0
+    selectedEntries.push_back(&inEntry);
+
+    mainFormlayout->removeRow(inEntry.getIndex());
+    mainEntries.erase(mainEntries.begin() + inEntry.getIndex());
+
+    std::cout << "received entry: " << inEntry.getIndex() << std::endl;
+}
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    mainFormlayout = new QFormLayout(ui->scrollAreaWidgetContent);
+    selectFormlayout = new QFormLayout(ui->scrollAreaWidgetContentSelect);
 
-    // Example code from:
-    // https://stackoverflow.com/questions/49020491/qlabel-and-qpushbutton-align
-    QFormLayout* const formlayout = new QFormLayout(ui->scrollAreaWidgetContent);
     for(int i = 0; i < characters.size(); i++) {
-        Entry* newEntry = new Entry(characters[i].first, i);
+        Entry* newEntry = new Entry(characters[i].first, characters[i].second, i);
 
-        formlayout->insertRow(i, newEntry->getHLayout());
-        //hlayout.push_back(newEntry.getHLayout());
-        entries.push_back(newEntry);
+        QObject::connect(newEntry, &Entry::sendEntry, this, &MainWindow::receiveEntry);
+
+        mainFormlayout->insertRow(i, newEntry->getHLayout());
+        mainEntries.push_back(newEntry);
     }
 }
 

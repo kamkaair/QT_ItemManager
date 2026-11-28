@@ -4,7 +4,7 @@
 #include <QPushButton>
 #include <iostream>
 
-Entry::Entry(QString charName, int seenAmount) : characterName(charName), amountSeen(seenAmount)
+Entry::Entry(QString charName, int inAmountSeen, int inIndex) : characterName(charName), seenAmount(inAmountSeen), index(inIndex)
 {
     newHLayout = new QHBoxLayout();
     QLabel *labelName = new QLabel();
@@ -38,11 +38,13 @@ bool Entry::eventFilter(QObject *obj, QEvent *event)
     if (event->type() == QEvent::MouseButtonPress) {
         QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
         if(mouseEvent->button() == Qt::LeftButton) {
-            qDebug() << "Mouse press on child at: " << mouseEvent->pos() << " - " << amountSeen;
+            qDebug() << "Mouse press on child at: " << mouseEvent->pos() << " - " << index;
+            emit sendEntry(*this);
 
             // Return false to let the event continue propagating to the child widget itself.
             // Return true to stop it here.
             //return false;
+            return true;
         }
     }
     return QObject::eventFilter(obj, event);

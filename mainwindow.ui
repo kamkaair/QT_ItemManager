@@ -38,11 +38,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QScrollArea" name="scrollArea">
+       <widget class="QScrollArea" name="ScrollSelected">
         <property name="widgetResizable">
          <bool>true</bool>
         </property>
-        <widget class="QWidget" name="scrollAreaWidgetContents_3">
+        <widget class="QWidget" name="scrollAreaWidgetContentSelect">
          <property name="geometry">
           <rect>
            <x>0</x>
